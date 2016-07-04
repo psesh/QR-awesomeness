@@ -1,13 +1,13 @@
 % Code for computing QR factorization using Householder vectors
 % Copyright (c) 2016 by Pranay Seshadri
-function [Q,R] = qr_householder(A)
+function [Q,R] = qr_Householder(A)
 
 % Size of A
 [m,n] = size(A);
 
-for j = 1 : n
+for j = 1 : n - 1
     [v,betav] = house(A(j:m,j));
-    A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n);
+    A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n)
     if j < m
         A(j+1:m,j) = v(2:m - j + 1);
     end

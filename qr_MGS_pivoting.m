@@ -5,7 +5,7 @@
 % orthogonalization and column pivoting" (2000)
 %
 % Copyright (c) 2016 by Pranay Seshadri
-function [Q,R, pivots] = qr_householderpivotingIII(A)
+function [Q,R, pivots] = qr_MGS_pivoting(A)
 [m,n] = size(A); % Size of "A" -- can set as input!
 column_norms = zeros(n,1); % Initialize column norms vector
 epsilon = zeros(n,1); % epsilon array
