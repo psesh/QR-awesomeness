@@ -10,4 +10,4 @@ A = rand(5,5);
 [R2,P2] = qr_BusingerGolub_pivoting(A);
 
 % Modified Gram Schmidt
-[Q3,R3, P3] = qr_MGS_pivoting(A)
+[Q3,R3, P3] = qr_MGS_pivoting(A);

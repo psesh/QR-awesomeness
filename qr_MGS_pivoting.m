@@ -20,9 +20,6 @@ for j = 1 : n
     epsilon(j,1) = eps * column_norms(j,1);
 end
 
-% Used for pythogras updating!
-tau = min(eps^(1/4), 0.001);
-
 % Now loop!
 for k = 1 : n
     
@@ -79,20 +76,7 @@ for k = 1 : n
     if(k ~= n)
         for j = k + 1 : n
             R(k,j) = Q(1:m,k)' * A(1:m,j);
-            A(1:m,j) = A(1:m,j) - R(k,j)* Q(1:m,k);
-            %column_norms(j,1) = column_norms(j,1) - R(k,j)^2  ;
-            %actual = norm(A(1:m, j),2)^2;
-            %V = [column_norms(j,1), actual];
-            %disp(V)
-            
-%             % To address difficulty in "Pythogras' updating"
-%             %disp('got here----');
-%             if(column_norms(j,1) < epsilon(j) / tau)
-%                 disp('here')
-%                 column_norms(j,1) = sum(A(1:m,j).^2);
-%                 epsilon(j,1) = eps * column_norms(j,1);
-%             end
-            
+            A(1:m,j) = A(1:m,j) - R(k,j)* Q(1:m,k);          
             % ---- Seems to be pretty similar to MATLAB -------    
             column_norms(j,1) = norm(A(1:m, j),2)^2;
         end
