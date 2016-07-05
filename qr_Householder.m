@@ -1,6 +1,12 @@
 % Code for computing QR factorization using Householder vectors
 % Copyright (c) 2016 by Pranay Seshadri
-function [Q,R] = qr_Householder(A)
+function [Q,R] = qr_Householder(A, varargin)
+
+if isempty(varargin)
+    ;
+else
+    thin = 1;
+end
 
 % Size of A
 [m,n] = size(A);
@@ -18,9 +24,16 @@ R = triu(A); % R is the upper triangular matrix of the "new" A
 k = min(m,n);
 Q = eye(m,m);
 for j = k : -1 : 1
-    v = [1; A(j+1:m,j)];
-    betav = 2/(1 + norm(A(j+1:m,j), 2)^2); % We get the beta's from the stored Householder vectors!
+    v = [1; A((j+1):m,j)];
+    betav = 2/(1 + norm(A((j+1):m,j), 2)^2); % We get the beta's from the stored Householder vectors!
     Q(j:m,j:m) = Q(j:m,j:m) - (betav * (v*v') * Q(j:m,j:m));
+end
+
+% Making it thin!?
+if thin == 1
+    disp('Thin QR');
+    Q = Q(1:m, 1:n);
+    R = R(1:n, 1:n);
 end
 
 end
