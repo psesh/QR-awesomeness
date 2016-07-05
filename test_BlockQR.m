@@ -1,22 +1,6 @@
 clear; close all; clc;
 
 % Test Block-QR with pivoting
-A = rand(50,30);
-[m,n] = size(A);
-perm = 1 : n;
-ideal_nb = 5;
-
-% Compute column norms
-for j = 1 : n
-   column_norms(j) = norm(A(:,j),2); 
-end
-
-% begin
-j = 1;
-while j <= n
-    nb = min(ideal_nb, n-j+1);
-    rowk = j;
-    [Ablock, column_norms, perm] = qr_BlockBusingerGolub_pivoting(m, n - j + 1, nb, rowk, A(:, j:n), column_norms, perm );
-    j = j + nb;
-end
-    
+r = 4;
+A = randi(12,11);
+Q = qr_BlockHouseholder(A, r);
