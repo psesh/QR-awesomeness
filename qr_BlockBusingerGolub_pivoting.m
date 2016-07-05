@@ -2,14 +2,10 @@
 % Copyright (c) 2016 by Pranay Seshadri
 %
 % See Quintana-Orti's et al. (1996)
-function Ablock = qr_BlockBusingerGolub_pivoting(m, n, nb, rowk, A)
+function [Ablock, column_norms, perm] = qr_BlockBusingerGolub_pivoting(m, n, nb, rowk, A, column_norms, perm)
 F(1:n, 1:nb) = 0;
 k = 0; % will update in loop!
 
-% Compute column norms
-for j = 1 : n
-   column_norms(j) = norm(A(:,j),2); 
-end
 
 % Reduction steps
 for j = 1 : nb

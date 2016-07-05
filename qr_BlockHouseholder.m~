@@ -1,0 +1,19 @@
+% Block Householder QR
+% Copyright (c) 2016 by Pranay Seshadri
+% Golub and Van Loan (page 250 ed. 4)
+function [Q,R] = qr_BlockHouseholder()
+
+Q = eye(m);
+lambda = 1;
+k = 0;
+
+
+
+
+
+
+
+
+
+
+end

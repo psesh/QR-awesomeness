@@ -7,7 +7,7 @@ function [Q,R] = qr_Householder(A)
 
 for j = 1 : n - 1
     [v,betav] = house(A(j:m,j));
-    A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n)
+    A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n);
     if j < m
         A(j+1:m,j) = v(2:m - j + 1);
     end

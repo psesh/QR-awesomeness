@@ -16,7 +16,7 @@ j = 1;
 while j <= n
     nb = min(ideal_nb, n-j+1);
     rowk = j;
-    Ablock = qr_BlockBusingerGolub_pivoting(m, n - j + 1, nb, rowk, A(:, j:n) );
+    [Ablock, column_norms, perm] = qr_BlockBusingerGolub_pivoting(m, n - j + 1, nb, rowk, A(:, j:n), column_norms, perm );
     j = j + nb;
 end
     
