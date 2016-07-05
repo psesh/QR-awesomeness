@@ -31,7 +31,6 @@ end
 
 % Making it thin!?
 if thin == 1
-    disp('Thin QR');
     Q = Q(1:m, 1:n);
     R = R(1:n, 1:n);
 end
