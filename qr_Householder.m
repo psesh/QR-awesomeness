@@ -11,7 +11,7 @@ end
 % Size of A
 [m,n] = size(A);
 
-for j = 1 : n - 1
+for j = 1 : n
     [v,betav] = house(A(j:m,j));
     A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n);
     if j < m

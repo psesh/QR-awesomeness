@@ -7,18 +7,16 @@ function [Q,R] = qr_BlockHouseholder_Recursive(A, n, nb)
 
 if n <= nb
     % Compute a thin QR factorization!
-    temp2 = A;
-    [Q,R] = qr_Householder(temp2, 'thin');
+    [Q,R] = qr_Householder(A, 'thin');
     
 else
+    
     % Recursive calls!
     n1 = floor(n/2);
-    temp2 = A(:,1:n1);
-    [Q1,R11] = qr_BlockHouseholder_Recursive(temp2, n1, nb);
+    [Q1,R11] = qr_BlockHouseholder_Recursive(A(:,1:n1), n1, nb);
     R12 = Q1' * A(:,(n1+1):n);
     A(:,(n1 + 1):n) = A(:,(n1+1):n) - Q1*R12;
-    temp3 = A(:,(n1 + 1):n);
-    [Q2,R22] = qr_BlockHouseholder_Recursive(temp3, n-n1, nb);
+    [Q2,R22] = qr_BlockHouseholder_Recursive(A(:,(n1 + 1):n), n - n1, nb);
     
     % Final stage.
     Q = [Q1, Q2];
