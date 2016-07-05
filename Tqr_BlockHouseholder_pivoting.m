@@ -1,8 +1,8 @@
-% Block Householder QR
+% Block Householder QR with pivoting!>?>?>
 % Copyright (c) 2016 by Pranay Seshadri
 % Golub and Van Loan (page 250 ed. 4)
 % Coded July 5th 2016
-function Q = qr_BlockHouseholder(A, r)
+function Q = Tqr_BlockHouseholder(A, r)
 [m,n] = size(A);
 Q = eye(m);
 lambda = 1;

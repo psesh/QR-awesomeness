@@ -1,6 +1,7 @@
 % Block Householder QR with Recursion
 % Copyright (c) 2016 by Pranay Seshadri
 % Golub and Van Loan (page 251 ed. 4)
+% Coded July 5th 2016
 % Assumes that A has full column rank and nb is a positive blocking
 % parameter.
 function [Q,R] = qr_BlockHouseholder_Recursive(A, n, nb)
