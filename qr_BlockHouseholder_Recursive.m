@@ -11,4 +11,4 @@ if n <= nb
 end
 
 
-end
+end.gitignore
