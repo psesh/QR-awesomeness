@@ -20,4 +20,6 @@ while j <= n
     [Ablock, column_norms, perm] = qr_BlockBlas3QR(m, n-j+1, j, nb, A(:, j:n), perm, column_norms);
     j = j + nb;
 end
+
+
 end

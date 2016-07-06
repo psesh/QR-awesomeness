@@ -4,7 +4,7 @@
 %
 % See Quintana-Orti's et al. (1998) SIAM paper
 % Coded July 5th 2016
-function [Ablock, column_norms, perm] = qr_BlockBlas3QR(m, n, nb, rowk, Asub, perm, column_norms)
+function [A, column_norms, perm] = qr_BlockBlas3QR(m, n, nb, rowk, A, perm, column_norms)
 
 % Setup
 F(1:n,1:nb) = 0;
@@ -26,9 +26,9 @@ for j = 1 : nb
         perm(p) = temp;
         clear temp;
         
-        temp = Asub(:,j);
-        Asub(:,j) = Asub(:,p);
-        Asub(:,p) = temp;
+        temp = A(:,j);
+        A(:,j) = A(:,p);
+        A(:,p) = temp;
         clear temp;
         
         temp = column_norms(j);
@@ -42,29 +42,28 @@ for j = 1 : nb
         clear temp;
     end
     
-    % Update pivot column
-    size(F)
-    size(Asub)
-    Asub(k:m,j) = Asub(k:m,j) - Asub(k:m, 1:j-1) * F(1, 1:j-1)';
-    disp('got here');
-    
     % Reduction
-    [v, beta_v] = house(Asub(k:m, j));
+    [v, beta_v] = house(A(k:m, j));
     tau(j) = beta_v;
     Y(:,j) = v;
     
+    % Update pivot column
+    indices = [k, j, m]
+    A(k:m,j) = A(k:m,j-1) - Y(k:m, 1:j-1) * F(j, 1:j-1)';
+    disp('got here');
+
     % Incremental computation of F:
-    F(j+1:n,j) = tau(j) * Asub(j:m,j+1:n)' * Y(j:m,j);
+    F(j+1:n,j) = tau(j) * A(j:m,j+1:n)' * Y(j:m,j);
     F(1:n, j) = F(1:n,j) - tau(j) * F(1:n, 1:j-1) * Y(j:m, 1:j-1)' * Y(j:m,j);
     
     % Update of pivot row
-    Asub(k,j+1:n) = Asub(k,j+1:n) - Asub(k,1:j) * F(j+1:n, 1:j)';
+    A(k,j+1:n) = A(k,j+1:n) - Y(k,1:j) * F(j+1:n, 1:j)';
     
     % Norm downdate
-    column_norms(j+1:n) = column_norms(j+1:n) - Asub(k, j+1: n).^2;
+    column_norms(j+1:n) = column_norms(j+1:n) - A(k, j+1: n).^2;
     
 end
-Asub(k+1:m, nb+1: n)  = Asub(k+1:m, nb+1: n) - Y(k+1:m,1:nb)*F(nb+1:n,1:nb)';
-Ablock = Asub(k+1:m, nb+1: n);
+A(k+1:m, nb+1: n)  = A(k+1:m, nb+1: n) - Y(k+1:m,1:nb)*F(nb+1:n,1:nb)';
+
 end
 
