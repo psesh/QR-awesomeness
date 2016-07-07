@@ -4,7 +4,7 @@
 %
 % See Quintana-Orti's et al. (1998) SIAM paper
 % Coded July 5th 2016
-function [A, column_norms, perm] = qr_BlockBlas3QR(m, n,rowk, nb,  A, perm, column_norms)
+function [column_norms, perm] = qr_BlockBlas3QR(m, n, rowk, nb,  A, perm, column_norms)
 
 % Setup
 F(1:n,1:nb) = 0;
@@ -65,5 +65,6 @@ for j = 1 : nb
 end
 % Block update
 A(k+1:m, nb+1: n)  =  A(k+1:m, nb+1: n) - Y(k+1:m,1:nb)*F(nb+1:n,1:nb)';
+size(A)
 end
 

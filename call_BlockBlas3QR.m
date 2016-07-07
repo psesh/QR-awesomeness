@@ -17,8 +17,7 @@ end
 j = 1;
 while j <= n
     nb = min(idealnb, n-j+1);
-    [A, column_norms, perm] = qr_BlockBlas3QR(m, n-j+1, j, nb, A(:, j:n), perm, column_norms);
-    disp(A)
+    [column_norms, perm] = qr_BlockBlas3QR(m, n-j+1, j, nb, A(:, j:n), perm, column_norms);
     j = j + nb;
 end
 
