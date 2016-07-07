@@ -4,7 +4,7 @@
 %
 % See Quintana-Orti's et al. (1998) SIAM paper
 % Coded July 5th 2016
-function [column_norms, perm] = qr_BlockBlas3QR(m, n, rowk, nb,  A, perm)
+function [column_norms, perm] = qr_BlockBlas3QR_pivoting(m, n, rowk, nb,  A, perm)
 
 % Setup
 F(1:n,1:nb) = 0;
@@ -24,7 +24,7 @@ for j = 1 : nb
 
     % Figure out which index holds the maximum value
     [~,p] = max(column_norms);
-    pmax = p + j - 1 % adjust for the location of p
+    pmax = p + j - 1;  % adjust for the location of p
     
     % If the highest norm is 0 then we are done!
     if(column_norms(p) == 0);
@@ -58,7 +58,7 @@ for j = 1 : nb
     
     % Compute the householder transform -- need to code up this!
     [beta_v, v, tau(j)] = householder_modified(A(k, j), A(k+1:m, j) );
-    A(k,j) = 1.0
+    A(k,j) = 1.0;
     if(m - k > 0)
         A(k+1:m, j) = v(2:end);
     end
