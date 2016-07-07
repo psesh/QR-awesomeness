@@ -6,3 +6,5 @@ A set of codes dedicated to QR factorization:
   4. Recursive Block QR with column pivoting
   5. LAPACK's DGEQP3
   
+Pranay Seshadri <br>
+University of Cambridge
