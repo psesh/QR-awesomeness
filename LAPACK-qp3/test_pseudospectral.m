@@ -1,5 +1,3 @@
-% Test call_BlockBlas3QR
-clear; close all; clc;
 clear; close all; clc;
 % Setup.
 s = parameter('Legendre', -1, 1); % parameter is Legendre
@@ -12,18 +10,22 @@ g = funceval(fun, p); % function eval'd at quadrature points
 A =  W' * P'; % the design matrix
 y = W' * g; % weighted function eval's
 x = A \ y; % "True" least squares solution!
-[m,n] = size(A);
-idealnb = 10;
-[Aout, perm] = call_BlockBlas3QR(m, n, idealnb, A);
-[Q,R,P] = qr(A, 'vector');
+m = 30;  n = 30;
+% Subset selection - Golub & Van Loan (page 295)
+A_hat = A(:,1:m); % First select number of basis terms
 
-figure1 = figure; 
-imagesc(log10(abs(Aout')));
+% QR Column pivoting
+[~,~,Pn] = callBlockBlas3QR(A_hat);  % MATLAB
 
-figure2 = figure;
-imagesc(log10(abs(A')))
+% 2-nrom errors!
+P2 = P(1:n);
+xx = A_hat(P2',:) \ y(P2);
+Pn2 = Pn(1:n);
+xx2 = A_hat(Pn2,:) \ y(Pn2);
+error_subset= norm(xx - x(1:m), 2)
+error_qr = norm(xx2 - x(1:m), 2)
 
-figure3 = figure;
-plot(P, 'bo'); hold on;
-plot(perm, 'rx');
+% Out of curiosity -- difference in stencil!
+plot(Pn2, 'bo'); hold on; plot(P2, 'rx')
+
 

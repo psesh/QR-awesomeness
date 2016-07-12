@@ -3,7 +3,7 @@
 function [Q,R] = qr_Householder(A, varargin)
 
 if isempty(varargin)
-    ;
+    thin = 0;
 else
     thin = 1;
 end
@@ -13,6 +13,8 @@ end
 
 for j = 1 : n
     [v,betav] = house(A(j:m,j));
+    % Problem is the step below! Requires me to store the submatrix
+    % A(j:m, j:m)!!!
     A(j:m,j:n) = (eye(m-j+1) - betav * (v * v') ) * A(j:m,j:n);
     if j < m
         A(j+1:m,j) = v(2:m - j + 1);

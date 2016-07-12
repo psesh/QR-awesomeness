@@ -6,4 +6,4 @@ A = rand(8,6);
 %Q = qr_BlockHouseholder(A, r);
 nb = 4;
 n = 11;
-[Q2,R2] = qr_BlockHouseholder_Recursive(A, n, nb);
+[Q, R] = qr_BlockHouseholder(A, nb);

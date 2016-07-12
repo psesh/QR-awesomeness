@@ -2,7 +2,7 @@
 % Copyright (c) 2016 by Pranay Seshadri
 % Golub and Van Loan (page 250 ed. 4)
 % Coded July 5th 2016
-function Q = qr_BlockHouseholder(A, r)
+function [Q, R] = qr_BlockHouseholder(A, r)
 [m,n] = size(A);
 Q = eye(m);
 lambda = 1;
@@ -14,6 +14,7 @@ while lambda <= n
     
     % Now we upper triangularize A(lambda:m, lambda:tau)
     % generating Householder matrices H_lambda_1, ..., H_tau
+    [lambda, tau]
     [v_store, beta_store] = qr_Householder_basic(A(lambda:m, lambda: tau) );
     
     % Now compute the block representation.
@@ -24,5 +25,5 @@ while lambda <= n
     Q(:, lambda:m) = Q(:, lambda:m) * (eye(rows,cols) - W * Y');
     lambda = tau + 1;   
 end
-
+R = triu(A);
 end
