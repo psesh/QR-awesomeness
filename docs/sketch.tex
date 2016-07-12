@@ -1,0 +1,105 @@
+
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage[figuresright]{rotating}
+  %% Algorithm style, could alternatively use algpseudocode
+
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{subfigure}% subcaptions for subfigures
+\usepackage{subfigmat}% matrices of similar subfigures, aka small multiples
+\usepackage{amsmath,amsfonts}
+\input{pauls-macros}
+\usepackage{algorithm}
+%\RequirePackage{algorithm}[0.1]
+%\renewcommand{\ALG@name}{Algorithm}
+%\renewcommand\thealgorithm{\siamprelabel\@arabic\c@algorithm}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\hypersetup{colorlinks, citecolor=Red,linkcolor=Blue, urlcolor=Green,breaklinks=true}
+\journal{ }
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}{Remark}[section]
+\begin{document}
+
+\begin{frontmatter}
+
+
+\title{QR with column pivoting}
+
+
+\begin{abstract}{
+Algorithms for computing QR factorizations with column pivoting
+}
+\end{abstract}
+
+%\begin{keyword}
+%aggressive design, robust design, uncertainty quantification, multi-objective optimization, kernel density estimation, optimization under uncertainty
+%
+%\end{keyword}
+
+\end{frontmatter}
+
+\section{QR with column pivoting}
+
+\begin{algorithm}
+  \caption{Businger and Golub QR with column pivoting}\label{Golub}
+  \begin{algorithmic}[1]
+    \Procedure{BAG-QRPivoting}{$A$}
+    \State Compute and store column norms of $A$ in \texttt{columnnorms} 
+    \State Declare permutation vector, \texttt{perm=1:n}
+      \For{ \texttt{k=1:n-1} } 
+      	\State Determine maximum column norm index, \texttt{jmax}.
+      	\State Swap $\va_{k}$ with $\va_{jmax}$ \Comment{Swaping}
+      	\State Swap \texttt{columnnorms(k)} with \texttt{columnnorms(jmax)} 
+      	\State Swap \texttt{perm(k)} with \texttt{perm(jmax)}
+      	\State Compute $\vv, \beta$ for $\va(k:m,k)$ \Comment{Householder reflection} 
+		\State Compute $\mH_{k} = \mI_{m-k+1} - \beta \vv \vv^T$
+		\State Update $\mA(k:m, k+1 : n) = \mH_{j} \mA(k:m, k+1 : n)$
+		\State \texttt{columnnorms(k+1:n) = columnnorms(k+1:n) -} $\mA(k,k+1:n)^2$
+      \EndFor
+      \State $\mR=$\texttt{triu}$(\mA)$
+      \State $\mQ=\mH_{n-1} \ldots \mH_{1} \mA$
+      \State \textbf{return} $\mQ$, $\mR$, \texttt{perm}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{QR with column pivoting for $\mD \in \mathbb{R}^{m \times n}$ where $m < n$}\label{euclid}
+  \begin{algorithmic}[1]
+    \Procedure{MGS-QRPivoting}{$\mD$}
+    \State Compute and store column norms of $\mD$ in \texttt{colnorms} 
+    \State Declare permutation vector, \texttt{perm=1:n}
+      \For{ \texttt{k=1:m} } 
+      	\State Store \texttt{max(colnorms(k:n))} index as \texttt{pmax}.
+      	\State Swap $\vd_{k}$ with $\vd_{jmax}$ \Comment{Swaping}
+      	\State Swap \texttt{colnorms(k)} with \texttt{colnorms(jmax)} 
+      	\State Swap \texttt{perm(k)} with \texttt{perm(jmax)}
+        \If{$k$ is not equal to 1}
+    		\For{ \texttt{i=1:k-1} }
+    		  \State $\vd_{k} = \vd_{k} - \vq_{i}^T \vd_{k} \vq_{i}$ \Comment{Reorthogonalization}
+    		 \EndFor 
+    	\EndIf
+    	\State $\vq_{k} = \vd_{k} / \left\Vert \vd_{k}\right\Vert _{2}$ \Comment{Normalization}
+       \If{$k$ is not equal to n} \Comment{Orthogonalization}
+        	\For{\texttt{j=k+1:n}}
+        		\State $\vd_{j} = \vd_{j} - \vq_{k}^T \vd_{j} \vq_{k}$
+        		\State Update \texttt{colnorms(j)}
+        	\EndFor
+        \EndIf	
+      \EndFor
+      \State \textbf{return} \texttt{perm(1:m)}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\end{document}
+
+
+\endinput
