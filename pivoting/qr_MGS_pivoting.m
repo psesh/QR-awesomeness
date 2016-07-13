@@ -8,7 +8,7 @@
 function [Q,R, pivots, A] = qr_MGS_pivoting(A)
 [m,n] = size(A); % Size of "A" -- can set as input!
 column_norms = zeros(n,1); % Initialize column norms vector
-epsilon = zeros(n,1); % epsilon array
+k2 = min(m,n);
 pivots = 1 : n; % 
 %---------------------------------------------------------------------
 % Step 0:
@@ -17,11 +17,11 @@ pivots = 1 : n; %
 % ideal only for the first iteration. [Change me later -- to Pythogras!]
 for j = 1 : n
     column_norms(j,1) = norm(A(1:m, j),2)^2;
-    epsilon(j,1) = eps * column_norms(j,1);
 end
 
 % Now loop!
-for k = 1 : n
+u = min(m,n);
+for k = 1 : u
     
     %---------------------------------------------------------------------
     % Step 0:
@@ -45,7 +45,7 @@ for k = 1 : n
             R(i,k) = R(i,j_star);
             R(i,j_star) = temp;
         end
-        
+
         % Swap pivots
         temp = pivots(k);
         pivots(k) = pivots(j_star);
@@ -58,9 +58,9 @@ for k = 1 : n
     %---------------------------------------------------------------------
     if( k~=1 )
         for i = 1 : k - 1
-            alpha(i) = Q(1:m,i)' * A(1:m,k);
-            R(i,k) = R(i,k) + alpha(i);
-            A(1:m,k) = A(1:m,k) - alpha(i)*Q(1:m,i);
+            alpha = Q(1:m,i)' * A(1:m,k);
+            R(i,k) = R(i,k) + alpha;
+            A(1:m,k) = A(1:m,k) - alpha*Q(1:m,i);
         end
     end
     
@@ -85,5 +85,8 @@ for k = 1 : n
     
 end
 
+% Get rid of excess columns of Q
+%Q = Q(1:k2, 1:k2);
+%R = R(1:m, :);
 
 end
