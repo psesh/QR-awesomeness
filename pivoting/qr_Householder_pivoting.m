@@ -5,19 +5,13 @@ function [Q, R,perm] = qr_Householder_pivoting(A)
 perm = 1 : n;
 column_norms = zeros(n,1); % Initialize column norms vector
 
-if m >= n % tall matrix A
-    u = n;
-elseif m < n % fat matrix A
-    u = m;
-end
-
 % Compute column norms
 for j = 1 : n
     column_norms(j) = norm(A(1:m,j),2)^2;
 end
 
 % Reduction steps
-for k = 1 : u 
+for k = 1 : n
     
     % Compute max column norm
     [~,j_star] = max(column_norms(k:n));
@@ -40,7 +34,6 @@ for k = 1 : u
     
     % Reduction -- compute Householder matrix
     [k, m]
-    
     [v,betav] = house(A(k:m,k));
     H = (eye(m-k+1) - betav * (v * v') ); % I'd prefer not to use H{j}!
     A(k:m,k:n) =  H * A(k:m,k:n);
@@ -55,12 +48,14 @@ for k = 1 : u
 end
 
 % Computation of Q using backward accumulation
-Q = eye(u,u);
-for j = u : -1 : 1
+k = min(m,n);
+Q = eye(m,m);
+for j = k : -1 : 1
     v = [1; A((j+1):m,j)];
     betav = 2/(1 + norm(A((j+1):m,j), 2)^2); % We get the beta's from the stored Householder vectors!
     Q(j:m,j:m) = Q(j:m,j:m) - (betav * (v*v') * Q(j:m,j:m));
 end
+
 
 R = triu(A);
 
