@@ -11,7 +11,7 @@ for j = 1 : n
 end
 
 % Reduction steps
-for k = 1 : n
+for k = 1 : min(m,n) - 1
     
     % Compute max column norm
     [~,j_star] = max(column_norms(k:n));
@@ -33,7 +33,6 @@ for k = 1 : n
     end
     
     % Reduction -- compute Householder matrix
-    [k, m]
     [v,betav] = house(A(k:m,k));
     H = (eye(m-k+1) - betav * (v * v') ); % I'd prefer not to use H{j}!
     A(k:m,k:n) =  H * A(k:m,k:n);
