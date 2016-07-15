@@ -4,7 +4,7 @@ function [Q, R,perm] = qr_Householder_pivoting(A)
 [m,n] = size(A);
 perm = 1 : n;
 column_norms = zeros(n,1); % Initialize column norms vector
-
+Q = eye(m,m);
 % Compute column norms
 for j = 1 : n
     column_norms(j) = norm(A(1:m,j),2)^2;
@@ -29,7 +29,7 @@ for k = 1 : min(m,n) - 1
         perm(k) = perm(j_star);
         perm(j_star) = temp;
         clear temp;
-     
+        
     end
     
     % Reduction -- compute Householder matrix
@@ -39,21 +39,24 @@ for k = 1 : min(m,n) - 1
     if k < m
         A(k+1:m,k) = v(2:m - k + 1);
     end
-
+    Q(:,k:m) = Q(:,k:m) -  Q(:,k:m) * (v * v' * betav);
+    
     % Update the remaining column norms
-    for j = k + 1 : n
-        column_norms(j) = norm(A(1:m, j),2)^2;
+    if(k~=n)
+        for j = k + 1 : n
+            column_norms(j) = norm(A(1:m, j),2)^2;
+        end
     end
 end
 
 % Computation of Q using backward accumulation
-k = min(m,n);
-Q = eye(m,m);
-for j = k : -1 : 1
-    v = [1; A((j+1):m,j)];
-    betav = 2/(1 + norm(A((j+1):m,j), 2)^2); % We get the beta's from the stored Householder vectors!
-    Q(j:m,j:m) = Q(j:m,j:m) - (betav * (v*v') * Q(j:m,j:m));
-end
+%k = min(m,n);
+
+% for j = k : -1 : 1
+%     v = [1; A((j+1):m,j)];
+%     betav = 2/(1 + norm(A((j+1):m,j), 2)^2); % We get the beta's from the stored Householder vectors!
+%     Q(j:m,j:m) = Q(j:m,j:m) - (betav * (v*v') * Q(j:m,j:m));
+% end
 
 
 R = triu(A);
