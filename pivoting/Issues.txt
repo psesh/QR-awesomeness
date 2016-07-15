@@ -1,5 +1,0 @@
-MGS:
-1. Seems to work for tall matrices -- but need to add an "if" for fat ones.
-
-Householder:
-1. For the tall matrix case -- results don't look that great!
