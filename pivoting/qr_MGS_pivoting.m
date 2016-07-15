@@ -9,7 +9,6 @@
 function [Q,R, pivots, A] = qr_MGS_pivoting(A)
 [m,n] = size(A); % Size of "A" -- can set as input!
 column_norms = zeros(n,1); % Initialize column norms vector
-k2 = min(m,n);
 pivots = 1 : n; % 
 %---------------------------------------------------------------------
 % Step 0:
