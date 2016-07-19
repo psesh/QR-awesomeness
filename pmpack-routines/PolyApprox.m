@@ -4,7 +4,6 @@
 % Copyright (c) 2016 by Pranay Seshadri
 % University of Cambridge
 clear; close all; clc;
-
 % Setup.
 s = parameter('Legendre', -1, 1); % parameter is Legendre
 n_big = 100; % number of quadrature points
@@ -23,7 +22,7 @@ Astar = A(:,1:m); % First select number of basis terms
 pivots_m = pivots_m(1:m);
 
 % So what happens if I add 1 more point?
-k = 5;
+k = 15;
 Ahat = A(:, (m+1):m+k);
 [~,~,pivots_k] = qr(Ahat', 'vector');
 pivots_k = pivots_k(1:k);
