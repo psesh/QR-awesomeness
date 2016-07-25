@@ -11,7 +11,7 @@ for j = 1 : n
 end
 
 % Reduction steps
-for k = 1 : min(m,n) - 1
+for k = 1 : min(m,n) 
     
     % Compute max column norm
     [~,j_star] = max(column_norms(k:n));
@@ -36,9 +36,9 @@ for k = 1 : min(m,n) - 1
     [v,betav] = house(A(k:m,k));
     H = (eye(m-k+1) - betav * (v * v') ); % I'd prefer not to use H{j}!
     A(k:m,k:n) =  H * A(k:m,k:n);
-    if k < m
-        A(k+1:m,k) = v(2:m - k + 1);
-    end
+    %if k < m
+    %    A(k+1:m,k) = v(2:m - k + 1);
+    %end
     Q(:,k:m) = Q(:,k:m) -  Q(:,k:m) * (v * v' * betav);
     
     % Update the remaining column norms
