@@ -4,12 +4,19 @@
 % 2. Aciya Dax, "A modified Gram-schmidt algorithm with iterative
 % orthogonalization and column pivoting" (2000)
 %
+% In this variant we do ignore the first "fixed_pivots" columns of A!
+%
 % Copyright (c) 2016 by Pranay Seshadri
 %
-function [Q,R, pivots, A] = qr_MGS_pivoting(A)
+function [Q,R, pivots, A] = qr_MGS_pivoting(A, fixed_pivots)
 [m,n] = size(A); % Size of "A" -- can set as input!
 column_norms = zeros(n,1); % Initialize column norms vector
 pivots = 1 : n; % 
+
+% Re-arrange the columns of A as per fixed pivots
+f = length(fixed_pivots);
+A = A * permutation(fixed_pivots');
+
 %---------------------------------------------------------------------
 % Step 0:
 %---------------------------------------------------------------------
@@ -31,8 +38,8 @@ for k = 1 : u
     j_star = j_star + (k - 1);
 
     
-    % 3. If j* = k, skip to step 1, else swap columns
-    if(k ~= j_star)
+    % 3. If j* = k, skip to step 1. Swamp columns only if k > f
+    if(k ~= j_star && k > f)
         
         % Swamp columns in A
         temp = A(1:m,k);
