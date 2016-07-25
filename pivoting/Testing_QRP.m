@@ -1,8 +1,9 @@
 % Comparing my version of MGS & Householder with pivoting
 % with MATLAB's qr for random matrices
 clear; close all; clc;
-A = rand(90,60); [m,n] = size(A); % random matrix
-[Q, R, P] = qr_MGS_pivoting(A);
+A = rand(5,3); [m,n] = size(A); % random matrix
+[Q, R, P] = qr_MGS_pivoting(A)
+pause;
 [Q2, R2, P2] = qr_Householder_pivoting(A);
 [Q3, R3, P3] = qr(A,'vector');
 

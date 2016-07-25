@@ -15,13 +15,13 @@ g = funceval(fun, p); % function eval'd at quadrature points
 A =  W' * P'; % the design matrix
 y = W' * g; % weighted function eval's
 x = A \ y; % "True" least squares solution!
-m = 10;  n = 20;
+m = 20;  n = 20;
 
 [~,~,pivots_m] = qr(A(:,1:m)', 'vector');  % QR column pivoting
 old_pivots = pivots_m(1:m);
 
 %% ONE LAYER ADAPTIVE!
-k = 15;
+k = 10;
 [~,~,new_pivots] = qr_MGS_pivoting_custom(A(:, 1:m+k)', pivots_m);
 new_pivots = new_pivots(1 : m+k);
 
