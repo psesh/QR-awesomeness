@@ -17,45 +17,22 @@ y = W' * g; % weighted function eval's
 x = A \ y; % "True" least squares solution!
 m = 10;  n = 20;
 
-Astar = A(:,1:m); % First select number of basis terms
-[~,~,pivots_m] = qr_Householder_pivoting(Astar');  % QR column pivoting
-%[~,~,pivots_m] = qr_MGS_pivoting(Astar');  % QR column pivoting
-%[~,~,pivots_m] = qr(Astar', 'vector');  % QR column pivoting
-pivots_m = pivots_m(1:m);
+[~,~,pivots_m] = qr(A(:,1:m)', 'vector');  % QR column pivoting
+old_pivots = pivots_m(1:m);
 
-% % So what happens if I add 1 more point?
-% k = 15;
-% Ahat = A(:, (m+1):m+k);
-% [~,~,pivots_k] = qr(Ahat', 'vector');
-% pivots_k = pivots_k(1:k);
-% [~,~,pivots_f] = qr(A(:, 1:(m+k) )', 'vector');  % QR column pivoting
-% 
-% % Figure out which pivots are common!
-old_pivots = pivots_m;
-% new_pivots = pivots_k;
-% counter = 1;
-% for i = 1 : length(old_pivots)
-%     [boolean, location] = amIinarray(old_pivots(i), new_pivots);
-%     if(strcmp(boolean, 'true'))
-%         common_value(counter) = old_pivots(i);
-%         common_location(counter) = location;
-%         counter = counter + 1;
-%     end
-% end
-% 
-% % Form a new "A" with only the old pivots and the common ones! Let's assume
-% % that none of the new pivots are in the old one! --> WORST CASE
-% A_lsqr = A(old_pivots, 1:m+k);
-% C_lsqr = A(new_pivots, 1:m+k);
-% b = y(old_pivots);
-% d = y(new_pivots);
-% x_update = solve_constrained_LS(A_lsqr, C_lsqr, b, d);
-% 
-% Now we proceed to solve the linearly constrained least squares problem!
+%% ONE LAYER ADAPTIVE!
+k = 15;
+[~,~,new_pivots] = qr_MGS_pivoting_custom(A(:, 1:m+k)', pivots_m);
+new_pivots = new_pivots(1 : m+k);
+
+%% BEST CASE!
+[~, ~, ideal_pivots] = qr(A(:,1:m+k)', 'vector');
+ideal_pivots = ideal_pivots(1:m+k);
+
+%% ERROR ANALYSIS
 x_old = A(old_pivots, 1:m) \ y(old_pivots); % Old estimate
-%x_naive = A([old_pivots, new_pivots], 1:m+k) \ y([old_pivots, new_pivots]);
-%x_noadaptive = A(pivots_f, 1:m+k) \ y(pivots_f);
-%error_update = norm(x(1:(m+k)) - x_update, 2)
+x_adaptive = A(new_pivots, 1:m+k) \ y(new_pivots);
+x_best = A(ideal_pivots, 1:m+k) \ y(ideal_pivots);
 error_old = norm(x(1:m) - x_old, 2)
-%error_new_naive = norm(x(1:(m+k)) - x_naive, 2)
-%error_no_adaptive = norm(x(1:(m+k)) - x_noadaptive, 2)
+error_adaptive = norm(x(1:m+k) - x_adaptive, 2)
+error_ideal = norm(x(1:m+k) - x_best, 2)
