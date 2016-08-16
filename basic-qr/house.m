@@ -9,8 +9,10 @@ m = length(x);
 sigmav = x(2:m)' * x(2:m);
 v = [1; x(2:m) ];
 
-
-if(sigmav == 0 && x(1) >= 0 )
+if(length(x) == 1)
+    v = 1;
+    betav = x(1);
+elseif(sigmav == 0 && x(1) >= 0 )
     betav = 0;
 elseif(sigmav == 0 && x(1) < 0 )
     betav = -2;
