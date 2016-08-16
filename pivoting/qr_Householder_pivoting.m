@@ -11,7 +11,7 @@ for j = 1 : n
 end
 
 % Reduction steps
-for k = 1 : min(m,n) 
+for k = 1 : min(m,n) - 1
     
     % Compute max column norm
     [~,j_star] = max(column_norms(k:n));
