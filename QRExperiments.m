@@ -2,7 +2,7 @@
 clear; close all; clc;
 A = rand(6,4);
 %% Ideas 2.
-B = bidiagonalization(A);
+[U, B, V] = bidiagonalization(A);
 
 
 %% Ideas 1.
