@@ -37,9 +37,6 @@ for k = 1 : min(m,n) - 1
     [v,betav] = house(A(k:m,k));
     H = (eye(m-k+1) - betav * (v * v') ); % I'd prefer not to use H{j}!
     A(k:m,k:n) =  H * A(k:m,k:n);
-    %if k < m
-    %    A(k+1:m,k) = v(2:m - k + 1);
-    %end
     Q(:,k:m) = Q(:,k:m) -  Q(:,k:m) * (v * v' * betav);
     
     % Update the remaining column norms
@@ -49,15 +46,6 @@ for k = 1 : min(m,n) - 1
         end
     end
 end
-
-% Computation of Q using backward accumulation
-%k = min(m,n);
-
-% for j = k : -1 : 1
-%     v = [1; A((j+1):m,j)];
-%     betav = 2/(1 + norm(A((j+1):m,j), 2)^2); % We get the beta's from the stored Householder vectors!
-%     Q(j:m,j:m) = Q(j:m,j:m) - (betav * (v*v') * Q(j:m,j:m));
-% end
 
 
 R = triu(A);
