@@ -1,8 +1,4 @@
-% MODIFIED GRAM-SCHMIDT QR COLUMN PIVOTING ALGORITHM:
-% See:
-% 1. Gene Golub & Charles Van Loan, "Matrix Computations" (2003)
-% 2. Aciya Dax, "A modified Gram-schmidt algorithm with iterative
-% orthogonalization and column pivoting" (2000)
+% A Lite MGS code that computes the pivot columns for a matrix A
 %
 % Copyright (c) 2016 by Pranay Seshadri
 %
